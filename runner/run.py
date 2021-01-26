@@ -1,8 +1,9 @@
-from dagster import execute_pipeline
-from runner.dags import get_dag
-from typing import Optional, Sequence
 import argparse
+from typing import Optional, Sequence
 
+from dagster import execute_pipeline
+
+from runner.dags import get_dag
 
 OptionalArgs = Optional[Sequence[str]]
 
@@ -19,14 +20,8 @@ def main(args_list: OptionalArgs = None):
 
     dag = get_dag(args.dag)
 
-    execute_pipeline(
-        pipeline=dag,
-        run_config={
-            "loggers": {"console": {"config": {"log_level": "INFO"}}},
-            "intermediate_storage": {"gcs": {"config": {"gcs_bucket": "dagster_intermediate"}}},
-            "solids": {"Docker": {"config": {"args": vars(args)}}},
-        },
-    )
+
+    execute_pipeline(pipeline=dag, preset="cfg")
 
 
 if __name__ == "__main__":
