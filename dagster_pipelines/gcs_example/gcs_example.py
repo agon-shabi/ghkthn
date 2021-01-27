@@ -1,4 +1,3 @@
-import os
 from collections import Counter
 
 from dagster import (
@@ -39,15 +38,15 @@ def count_letters(_context, word):
         PresetDefinition.from_files(
             "celery_k8s",
             config_files=[
-                file_relative_path(__file__, os.path.join("..", "celery_k8s.yaml")),
-                file_relative_path(__file__, os.path.join("..", "pipeline.yaml")),
+                file_relative_path(__file__, "celery_k8s.yaml"),
+                file_relative_path(__file__, "pipeline.yaml"),
             ],
             mode="default",
         ),
         PresetDefinition.from_files(
             "default",
             config_files=[
-                file_relative_path(__file__, os.path.join("..", "pipeline.yaml")),
+                file_relative_path(__file__, "pipeline.yaml"),
             ],
             mode="default",
         ),
