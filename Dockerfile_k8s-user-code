@@ -11,7 +11,8 @@ RUN pip install \
     dagster-aws==0.10.1 \
     dagster-gcp==0.10.1 \
     dagster-k8s==0.10.1 \
-    dagster-celery-k8s==0.10.1
+    dagster-celery-k8s==0.10.1 \
+    scikit-learn==0.24.1
 
 COPY dagster_pipelines/ /dagster_pipelines/
 RUN ls -lah /dagster_pipelines
