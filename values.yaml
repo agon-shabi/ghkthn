@@ -255,8 +255,10 @@ userDeployments:
         tag: COMMIT_SHA  # this is replaced using sed on helm upgrade (in cloud build) ... nasty
         pullPolicy: Always
       dagsterApiGrpcArgs:
-        - "-f"
-        - "/dagster_pipelines/gcs_example/gcs_example.py"
+        - "-f"  # --python-file
+        - "/dagster_pipelines/repos.py"
+        - "-d"  # --working-directory
+        - "/dagster_pipelines"
       port: 3030
       env: {}
       envConfigMaps: []

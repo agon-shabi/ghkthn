@@ -7,7 +7,7 @@ from dagster import (
     default_executors,
     file_relative_path,
     pipeline,
-    repository,
+    
     solid,
 )
 from dagster_gcp.gcs.resources import gcs_resource
@@ -54,8 +54,3 @@ def count_letters(_context, word):
 )
 def example_pipe():
     count_letters(multiply_the_word())
-
-
-@repository
-def example_repo():
-    return [example_pipe]
