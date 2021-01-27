@@ -1,0 +1,17 @@
+FROM python:3.7.8-slim
+
+RUN apt-get update -yqq && \
+    apt-get install -yqq cron
+
+RUN pip install \
+    dagster==0.10.1 \
+    dagster-postgres==0.10.1 \
+    dagster-cron==0.10.1 \
+    dagster-celery[flower,redis,kubernetes]==0.10.1 \
+    dagster-aws==0.10.1 \
+    dagster-gcp==0.10.1 \
+    dagster-k8s==0.10.1 \
+    dagster-celery-k8s==0.10.1
+
+COPY dagster_pipelines/ /dagster_pipelines/
+RUN ls -lah /dagster_pipelines
