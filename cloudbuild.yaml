@@ -1,8 +1,18 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit", "-f", "Dockerfile_k8s-dagit", "."]
+  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit:$COMMIT_SHA", "-f", "Dockerfile_k8s-dagit", "."]
+
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code", "-f", "Dockerfile_k8s-user-code", "."]
+  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code:$COMMIT_SHA", "-f", "Dockerfile_k8s-user-code", "."]
+
+- name: 'gcr.io/$PROJECT_ID/helm'
+  entrypoint: bash
+  args: 
+  - '-c'
+  - |  # Yuck yuck yuck
+    sed 's/COMMIT_SHA/${COMMIT_SHA}' values.yaml > "values_${COMMIT_SHA}.yaml"
+    helm upgrade dagster dagster/dagster -f "values_${COMMIT_SHA}.yaml"
+  
 images:
-  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit
-  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code
+  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit:$COMMIT_SHA
+  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code:$COMMIT_SHA

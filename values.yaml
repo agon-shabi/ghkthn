@@ -252,7 +252,7 @@ userDeployments:
     - name: "k8s-user-code"
       image:
         repository: "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code"
-        tag: latest
+        tag: COMMIT_SHA  # this is replaced using sed on helm upgrade (in cloud build) ... nasty
         pullPolicy: Always
       dagsterApiGrpcArgs:
         - "-f"
