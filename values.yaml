@@ -256,7 +256,7 @@ userDeployments:
         pullPolicy: Always
       dagsterApiGrpcArgs:
         - "-f"
-        - "/dagster_pipelines/gcs_example.py"
+        - "/dagster_pipelines/gcs_example/gcs_example.py"
       port: 3030
       env: {}
       envConfigMaps: []
