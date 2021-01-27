@@ -248,7 +248,42 @@ userDeployments:
 
       service:
         annotations: {}
-    
+
+    - name: "k8s-user-code"
+      image:
+        repository: "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code"
+        tag: latest
+        pullPolicy: Always
+      dagsterApiGrpcArgs:
+        - "-f"
+        - "/dagster_pipelines/gcs_example.py"
+      port: 3030
+      env: {}
+      envConfigMaps: []
+      envSecrets: []
+      annotations: {}
+      nodeSelector: {}
+      affinity: {}
+      tolerations: []
+      podSecurityContext: {}
+      securityContext: {}
+      resources: {}
+      replicaCount: 1
+      livenessProbe:
+        initialDelaySeconds: 0
+        periodSeconds: 20
+        timeoutSeconds: 3
+        successThreshold: 1
+        failureThreshold: 3
+      startupProbe:
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 3
+        successThreshold: 1
+        failureThreshold: 3
+
+      service:
+        annotations: {}
 
 ####################################################################################################
 # Pipeline Run: Configuration for user code containers.
@@ -772,4 +807,3 @@ extraManifests:
 
 serviceAccount:
   create: true
-

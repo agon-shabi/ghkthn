@@ -2,7 +2,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit", "-f", "Dockerfile_k8s-dagit", "."]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-pipeline-base", "-f", "Dockerfile_k8s-pipeline-base", "."]
+  args: ["build", "-t", "europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code", "-f", "Dockerfile_k8s-user-code", "."]
 images:
   - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-dagit
-  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-pipeline-base
+  - europe-west2-docker.pkg.dev/lbghack2021team11/t11-registry/k8s-user-code

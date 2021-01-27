@@ -16,5 +16,4 @@ RUN pip install \
     dagster-k8s==${DAGSTER_VERSION} \
     dagster-celery-k8s==${DAGSTER_VERSION}
 
-# Get example pipelines
-# COPY build_cache/ /
+COPY dagster_pipelines/ /
