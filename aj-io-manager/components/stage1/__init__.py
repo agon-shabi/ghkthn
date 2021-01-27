@@ -21,5 +21,5 @@ from dagster import (
 def stage_one(context):
 
     context.log.info(f"starting dag runid: {context.run_id}")
-    cfg = {"mycol": 1}
+    cfg = {"mycfg": {"some_key": "some_flag"}}
     return Output(cfg, output_name="cfg")
