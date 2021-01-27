@@ -11,6 +11,7 @@ steps:
   - '-c'
   - |  # Yuck yuck yuck
     sed 's/COMMIT_SHA/${COMMIT_SHA}' values.yaml > "values_${COMMIT_SHA}.yaml"
+    helm repo add dagster https://dagster-io.github.io/helm
     helm upgrade dagster dagster/dagster -f "values_${COMMIT_SHA}.yaml"
   
 images:
