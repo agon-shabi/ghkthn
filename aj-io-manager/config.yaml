@@ -1,0 +1,9 @@
+loggers:
+   console:
+      config:
+         log_level: "INFO"
+resources:
+    io_manager:
+        config:
+            gcs_bucket: "dagster_intermediate"
+            gcs_prefix: "aj-dagster-test-runs"

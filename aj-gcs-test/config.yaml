@@ -1,8 +1,0 @@
-loggers:
-   console:
-      config:
-         log_level: "INFO"
-intermediate_storage:
-   gcs:
-      config:
-         gcs_bucket: "dagster_intermediate"
