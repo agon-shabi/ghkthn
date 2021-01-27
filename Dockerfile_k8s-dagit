@@ -1,19 +1,16 @@
-ARG BASE_IMAGE=python:3.7.8-slim
-FROM "${BASE_IMAGE}"
-
-ARG DAGSTER_VERSION=0.10.1
+FROM python:3.7.8-slim
 
 RUN apt-get update -yqq && \
     apt-get install -yqq cron
 
 RUN pip install \
-    dagster==${DAGSTER_VERSION} \
-    dagster-graphql==${DAGSTER_VERSION} \
-    dagster-postgres==${DAGSTER_VERSION} \
-    dagster-cron==${DAGSTER_VERSION} \
-    dagster-celery[flower,redis,kubernetes]==${DAGSTER_VERSION} \
-    dagster-aws==${DAGSTER_VERSION} \
-    dagster-gcp==${DAGSTER_VERSION} \
-    dagster-k8s==${DAGSTER_VERSION} \
-    dagster-celery-k8s==${DAGSTER_VERSION} \
-    dagit==${DAGSTER_VERSION}
+    dagster==0.10.1 \
+    dagster-graphql==0.10.1 \
+    dagster-postgres==0.10.1 \
+    dagster-cron==0.10.1 \
+    dagster-celery[flower,redis,kubernetes]==0.10.1 \
+    dagster-aws==0.10.1 \
+    dagster-gcp==0.10.1 \
+    dagster-k8s==0.10.1 \
+    dagster-celery-k8s==0.10.1 \
+    dagit==0.10.1
