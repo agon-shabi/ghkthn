@@ -8,9 +8,12 @@ steps:
 - name: 'gcr.io/$PROJECT_ID/helm'
   entrypoint: bash
   args: 
-  - '-c'
-  - |  # Yuck yuck yuck
-    sed 's/COMMIT_SHA/${COMMIT_SHA}' values.yaml > "values_${COMMIT_SHA}.yaml"
+  - '-xc'
+  - |
+    kubectl cluster-info
+    helm version
+    gcloud container clusters get-credentials cluster-1 --zone us-west2-a
+    sed 's/COMMIT_SHA/${COMMIT_SHA}/' values.yaml > "values_${COMMIT_SHA}.yaml"  # Yuck yuck yuck
     helm repo add dagster https://dagster-io.github.io/helm
     helm upgrade dagster dagster/dagster -f "values_${COMMIT_SHA}.yaml"
   
