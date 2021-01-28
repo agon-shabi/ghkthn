@@ -1,7 +1,7 @@
 import io
 import pickle
 import pandas as pd
-from dagster import Field, IOManager, StringSource, check, io_manager
+from dagster import Field, IOManager, StringSource, check, io_manager, AssetMaterialization, AssetKey
 from dagster.utils import PICKLE_PROTOCOL
 from dagster.utils.backoff import backoff
 from google.api_core.exceptions import TooManyRequests
@@ -70,6 +70,10 @@ class BilingualObjectGCSIOManager(IOManager):
             self.bucket_obj.blob(key).upload_from_string,
             args=[pickled_obj],
             retry_on=(TooManyRequests,),
+        )
+
+        yield AssetMaterialization(
+            asset_key=AssetKey(key), description="Pushed result to GCS"
         )
 
 
