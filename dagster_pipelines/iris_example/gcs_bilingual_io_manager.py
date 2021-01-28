@@ -48,7 +48,7 @@ class BilingualObjectGCSIOManager(IOManager):
         try:
             obj = pd.read_csv(io.BytesIO(bytes_obj))
         except Exception as e:
-            context.log.error(str(e))
+            context.log.info("Doesn't seem to be a dataframe, must be a pickle")
             obj = pickle.loads(bytes_obj)
 
         return obj
