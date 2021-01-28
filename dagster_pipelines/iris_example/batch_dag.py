@@ -20,35 +20,8 @@ from iris_example.gcs_bilingual_io_manager import gcs_bilingual_io_manager
 import os
 
 
-class FSIOManager(IOManager):
 
-    @staticmethod
-    def __get_dir(context):
-        return os.path.join(context.pipeline_name, context.run_id)
-
-    @staticmethod
-    def __get_file_name(context):
-        return f'{context.step_key}_df.csv'
-
-    def handle_output(self, context, df):
-        dir_path = self.__get_dir(context)
-
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
-
-        df.to_csv(os.path.join(dir_path, self.__get_file_name(context)), index=False)
-
-    def load_input(self, context):
-        ctx = context.upstream_output
-        return pd.read_csv(os.path.join(self.__get_dir(ctx), self.__get_file_name(ctx)))
-
-
-@io_manager
-def fs_io_manager(init_context):
-    return FSIOManager()
-
-
-@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid
 def load_0(context, csv_path):
     """
     Bespoke logic for loading type 0 data.
@@ -56,7 +29,7 @@ def load_0(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid
 def load_1(context, csv_path):
     """
     Bespoke logic for loading type 1 data.
@@ -64,7 +37,7 @@ def load_1(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid
 def load_2(context, csv_path):
     """
     Bespoke logic for loading type 2 data.
@@ -139,11 +112,10 @@ def test_model(context, model, test_df):
 @pipeline(
     mode_defs=[
         ModeDefinition(
-            name="default",
+            name="demo-mode-with-gcs",
             resource_defs={
                 "gcs": gcs_resource,
                 "io_manager": gcs_bilingual_io_manager,
-                # "fs_io_manager_key": fs_io_manager,
             },
         ),
     ]
@@ -164,10 +136,17 @@ def full_run():
 
 run_config = {
     "solids": {
-        "load_0": {"inputs": {"csv_path": {"value": "train_0_df.csv"}}},
-        "load_1": {"inputs": {"csv_path": {"value": "train_1_df.csv"}}},
-        "load_2": {"inputs": {"csv_path": {"value": "train_2_df.csv"}}},
-        "load_test": {"inputs": {"csv_path": {"value": "test_df.csv"}}},
+        "load_0": {"inputs": {"csv_path": {"value": "iris_example/train_0_df.csv"}}},
+        "load_1": {"inputs": {"csv_path": {"value": "iris_example/train_1_df.csv"}}},
+        "load_2": {"inputs": {"csv_path": {"value": "iris_example/train_2_df.csv"}}},
+        "load_test": {"inputs": {"csv_path": {"value": "iris_example/test_df.csv"}}},
+    },
+    "resources": {
+        "io_manager": {
+            "config": {
+                "gcs_bucket": "dagster_io"
+            }
+        }
     }
 }
 
