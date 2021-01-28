@@ -8,15 +8,44 @@ Creates a DAG that:
 """
 
 import pandas as pd
-from dagster import pipeline, solid, execute_pipeline
+from dagster import pipeline, solid, execute_pipeline, IOManager, io_manager, OutputDefinition, ModeDefinition
 from sklearn.base import ClassifierMixin
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from collections import Counter
+import os
 
 
-@solid
+class FSIOManager(IOManager):
+
+    @staticmethod
+    def __get_dir(context):
+        return os.path.join(context.pipeline_name, context.run_id)
+
+    @staticmethod
+    def __get_file_name(context):
+        return f'{context.step_key}_df.csv'
+
+    def handle_output(self, context, df):
+        dir_path = self.__get_dir(context)
+
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+
+        df.to_csv(os.path.join(dir_path, self.__get_file_name(context)), index=False)
+
+    def load_input(self, context):
+        ctx = context.upstream_output
+        return pd.read_csv(os.path.join(self.__get_dir(ctx), self.__get_file_name(ctx)))
+
+
+@io_manager
+def fs_io_manager(init_context):
+    return FSIOManager()
+
+
+@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_0(context, csv_path):
     """
     Bespoke logic for loading type 0 data.
@@ -24,7 +53,7 @@ def load_0(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid
+@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_1(context, csv_path):
     """
     Bespoke logic for loading type 1 data.
@@ -32,7 +61,7 @@ def load_1(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid
+@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_2(context, csv_path):
     """
     Bespoke logic for loading type 2 data.
@@ -104,7 +133,9 @@ def test_model(context, model, test_df):
     return score
 
 
-@pipeline
+@pipeline(
+    mode_defs=[ModeDefinition(resource_defs={"fs_io_manager_key": fs_io_manager})]
+)
 def full_run():
     features = create_features(
         load_0(),
