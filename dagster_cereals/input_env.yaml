@@ -1,0 +1,5 @@
+solids:
+  load_cereals:
+    inputs:
+      csv_path:
+        value: "cereal.csv"
