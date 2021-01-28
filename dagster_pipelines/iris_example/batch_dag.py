@@ -16,6 +16,7 @@ from sklearn.svm import SVC
 from collections import Counter
 from dagster_gcp.gcs.resources import gcs_resource
 from dagster_gcp.gcs.io_manager import gcs_pickle_io_manager
+from iris_example.gcs_bilingual_io_manager import gcs_bilingual_io_manager
 import os
 
 
@@ -47,7 +48,7 @@ def fs_io_manager(init_context):
     return FSIOManager()
 
 
-@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_0(context, csv_path):
     """
     Bespoke logic for loading type 0 data.
@@ -55,7 +56,7 @@ def load_0(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_1(context, csv_path):
     """
     Bespoke logic for loading type 1 data.
@@ -63,7 +64,7 @@ def load_1(context, csv_path):
     return pd.read_csv(csv_path)
 
 
-@solid(output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
+@solid  # (output_defs=[OutputDefinition(io_manager_key="fs_io_manager_key")])
 def load_2(context, csv_path):
     """
     Bespoke logic for loading type 2 data.
@@ -141,8 +142,8 @@ def test_model(context, model, test_df):
             name="default",
             resource_defs={
                 "gcs": gcs_resource,
-                "io_manager": gcs_pickle_io_manager,
-                "fs_io_manager_key": fs_io_manager,
+                "io_manager": gcs_bilingual_io_manager,
+                # "fs_io_manager_key": fs_io_manager,
             },
         ),
     ]
