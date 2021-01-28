@@ -62,7 +62,7 @@ class BilingualObjectGCSIOManager(IOManager):
             self._rm_object(key)
 
         if isinstance(obj, pd.DataFrame):
-            pickled_obj = obj.to_csv()
+            pickled_obj = obj.to_csv(index=False).encode()
         else:
             pickled_obj = pickle.dumps(obj, PICKLE_PROTOCOL)
 
