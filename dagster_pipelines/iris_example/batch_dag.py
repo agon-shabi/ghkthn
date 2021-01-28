@@ -112,7 +112,7 @@ def test_model(context, model, test_df):
 @pipeline(
     mode_defs=[
         ModeDefinition(
-            name="demo-mode-with-gcs",
+            name="gcs_demo_mode",
             resource_defs={
                 "gcs": gcs_resource,
                 "io_manager": gcs_bilingual_io_manager,
