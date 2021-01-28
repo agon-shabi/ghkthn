@@ -1,0 +1,36 @@
+*.o
+*.ko
+*.elf
+*.obj
+*.a
+*.lib
+*.so
+*.out
+*.class
+*.jar
+*.war
+*.pyc
+.settings
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+.ipynb_checkpoints/
+.idea/
+# Extra
+*.sw[po]
+
