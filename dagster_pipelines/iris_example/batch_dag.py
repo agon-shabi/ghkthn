@@ -14,6 +14,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from collections import Counter
+from dagster_gcp.gcs.resources import gcs_resource
+from dagster_gcp.gcs.io_manager import gcs_pickle_io_manager
 
 
 @solid
@@ -104,7 +106,14 @@ def test_model(context, model, test_df):
     return score
 
 
-@pipeline
+@pipeline(
+    mode_defs=[
+        ModeDefinition(
+            name="gcs",
+            resource_defs={"gcs": gcs_resource, "io_manager": gcs_pickle_io_manager},
+        ),
+    ]
+)
 def full_run():
     features = create_features(
         load_0(),
